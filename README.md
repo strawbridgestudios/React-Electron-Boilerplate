@@ -19,5 +19,5 @@
 
 ### Commands
 
-`npm run dev` to run the application in development mode
-`npm run make` to package the react project into a electron.exe
+- `npm run dev` to run the application in development mode
+- `npm run make` to package the react project into a electron.exe
