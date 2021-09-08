@@ -4,6 +4,7 @@
 - [Reactstrap (for styling purposes)](https://www.npmjs.com/package/reactstrap)
 - [axios for fetching data to the backend](https://www.npmjs.com/package/axios) 
 - [Electron-is-dev](https://www.npmjs.com/package/electron-is-dev)
+- [React-router-dom](https://www.npmjs.com/package/react-router-dom)
 
 ### devDependencies
 - [Electron-Forge](https://www.electronforge.io/)
