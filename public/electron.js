@@ -1,19 +1,24 @@
-const path = require("path");
+const path = require('path');
 
-const { app, BrowserWindow, ipcMain, nativeTheme } = require('electron')
-const isDev = require("electron-is-dev");
+const {
+  app,
+  BrowserWindow,
+  ipcMain,
+  nativeTheme,
+} = require('electron');
+const isDev = require('electron-is-dev');
 
 // Conditionally include the dev tools installer to load React Dev Tools
 let installExtension, REACT_DEVELOPER_TOOLS;
 
 if (isDev) {
-  const devTools = require("electron-devtools-installer");
+  const devTools = require('electron-devtools-installer');
   installExtension = devTools.default;
   REACT_DEVELOPER_TOOLS = devTools.REACT_DEVELOPER_TOOLS;
 }
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling
-if (require("electron-squirrel-startup")) {
+if (require('electron-squirrel-startup')) {
   app.quit();
 }
 
@@ -24,62 +29,62 @@ async function createWindow() {
     height: 600,
     webPreferences: {
       nodeIntegration: true,
-      preload: path.join(__dirname, 'preload.js')
-    }
+      preload: path.join(__dirname, 'preload.js'),
+    },
   });
 
   // and load the index.html of the app.
   await win.loadURL(
     isDev
-      ? "http://localhost:3000"
-      : `file://${path.join(__dirname, "../build/index.html")}`
+      ? 'http://localhost:3000'
+      : `file://${path.join(__dirname, '../build/index.html')}`,
   );
 
   // Open the DevTools.
   if (isDev) {
-    win.webContents.openDevTools({ mode: "detach" });
+    win.webContents.openDevTools({ mode: 'detach' });
   }
 
   // The ipcMain.handle methods are how the main process responds to the click events
   // from the buttons on the HTML page.
   ipcMain.handle('dark-mode:toggle', () => {
     if (nativeTheme.shouldUseDarkColors) {
-      nativeTheme.themeSource = 'light'
+      nativeTheme.themeSource = 'light';
     } else {
-      nativeTheme.themeSource = 'dark'
+      nativeTheme.themeSource = 'dark';
     }
-    return nativeTheme.shouldUseDarkColors
-  })
+    return nativeTheme.shouldUseDarkColors;
+  });
   // The 'dark-mode:system' IPC channel handler method assigns the string 'system' to
   // the themeSource and returns nothing.
   ipcMain.handle('dark-mode:system', () => {
-    nativeTheme.themeSouce = 'system'
-  })
+    nativeTheme.themeSouce = 'system';
+  });
 }
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
-    createWindow();
-  
-    if (isDev) {
-      installExtension(REACT_DEVELOPER_TOOLS)
-        .then(name => console.log(`Added Extension:  ${name}`))
-        .catch(error => console.log(`An error occurred: , ${error}`));
-    }
-  });
+  createWindow();
+
+  if (isDev) {
+    installExtension(REACT_DEVELOPER_TOOLS)
+      .then((name) => console.log(`Added Extension:  ${name}`))
+      .catch((error) => console.log(`An error occurred: , ${error}`));
+  }
+});
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
-app.on("window-all-closed", () => {
-  if (process.platform !== "darwin") {
+app.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') {
     app.quit();
   }
 });
 
-app.on("activate", () => {
+app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   if (BrowserWindow.getAllWindows().length === 0) {
